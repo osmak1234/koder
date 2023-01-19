@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+function test(n) {
+  console.log("this is n: " + n);
+  let input = Math.pow(2, n);
+  let output = {};
+  let current = "0".repeat(n + 1);
+  for (l = 0; l < n; l++) {
+    output[`y${l}`] = [];
+  }
+  console.log("this is output: " + output);
+  for (i = 0; i < input; i++) {
+    for (j = 0; j < n; j++) {
+      if (isBit1(i, n - j, current)) {
+        if (output[`y${j}`].length == 0) {
+          output[`y${j}`] = isBit1(i, n - j, current);
+        } else {
+          output[`y${j}`].push(" + ", ...isBit1(i, n - j, current));
+        }
+      }
+    }
+    current = addBinary(current, "1", n + 1);
+  }
+  console.log("this is output after the filling it: " + output);
+  console.log(output)
+  console.log("returning output")
+
+  return output;
+}
+
+function isBit1(i, bit, current) {
+  if (current[bit] == 1) {
+    let arr = [`a${i}`];
+    for (k = i - 1; k != -1; k--) {
+      arr = [...arr, `ā${k}`];
+    }
+    return arr;
+  } else {
+    return false;
+  }
+}
+
+function addBinary(a, b, n) {
+  let added = (parseInt(a, 2) + parseInt(b, 2)).toString(2);
+  if (added.length >= n) {
+    return added;
+  } else {
+    return added.padStart(n, "0");
+  }
+}
+let value = 0;
+async function onRun(){
+
+    document.getElementById("paragraph").innerHTML = "";
+    console.log(value)
+    let output1 = test(value * 1);
+    console.log(output1)
+    let outputString = "";
+    for (let key in output1) {
+    output1[key] = output1[key].join(" ");
+}
+    for (let key in output1) {
+        outputString += key + ": " + output1[key] + "<br>" + "<br>";
+    }
+    document.getElementById("paragraph").innerHTML = outputString;
+}
+function handleChange (event) {
+    value = event.target.value
+}
+
+
+    </script>
+<input type="number" placeholder="Počet výstupů" 
+onchange="handleChange(event)"
+>
+<button onclick="onRun(value)">Run</button>
+<p id="paragraph"></p>
+</html>
